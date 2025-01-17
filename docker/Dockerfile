@@ -2,6 +2,25 @@
 
 ARG RUST_VERSION=1.83
 ARG APP_NAME=server
+ARG ASSETS=/assets
+ARG NODE_VERSION=22
+
+
+FROM node:${NODE_VERSION}-alpine AS assets
+
+WORKDIR /app
+
+RUN --mount=type=bind,source=web,target=web \
+    --mount=type=bind,source=package.json,target=package.json \
+    --mount=type=bind,source=package-lock.json,target=package-lock.json \
+    --mount=type=cache,target=/app/web/dist/ \
+    --mount=type=cache,target=/app/web/node_modules/ \
+    --mount=type=cache,target=/app/web/.astro/ \
+    --mount=type=cache,target=/app/node_modules/ \
+    --mount=type=cache,target=/root/.npm \
+    npm ci && \
+    npm run build -w web && \
+    cp -R /app/web/dist/ /dist
 
 
 FROM rust:${RUST_VERSION}-alpine AS build
@@ -35,7 +54,10 @@ RUN adduser \
 USER appuser
 
 COPY --from=build /bin/server /bin/
+COPY --from=assets /dist ${ASSETS}/
 
 EXPOSE 3000
+
+ENV ASSETS=${ASSETS}
 
 CMD ["/bin/server"]
