@@ -42,7 +42,16 @@
   // Configure tool-specific properties.
   "customizations": {
     "vscode": {
-      "extensions": ["esbenp.prettier-vscode"]
+      "extensions": [
+        "astro-build.astro-vscode",
+        "bradlc.vscode-tailwindcss",
+        "dbaeumer.vscode-eslint",
+        "eamodio.gitlens",
+        "esbenp.prettier-vscode",
+        "github.vscode-github-actions",
+        "ms-azuretools.vscode-docker",
+        "streetsidesoftware.code-spell-checker"
+      ]
     }
   }
 
