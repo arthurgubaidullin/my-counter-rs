@@ -2,6 +2,25 @@
   "version": "2.0.0",
   "tasks": [
     {
+      "type": "shell",
+      "command": "npm",
+      "args": ["run", "build", "--workspaces", "--if-present"],
+      "problemMatcher": ["$tsc"],
+      "group": {
+        "kind": "build"
+      },
+      "label": "npm: build",
+      "icon": { "id": "gear" },
+      "presentation": {
+        "echo": true,
+        "reveal": "silent",
+        "focus": false,
+        "panel": "dedicated",
+        "showReuseMessage": true,
+        "clear": true
+      }
+    },
+    {
       "type": "cargo",
       "command": "build",
       "args": ["--workspace"],
@@ -72,7 +91,12 @@
     {
       "label": "cargo: build test clippy",
       "group": { "kind": "build", "isDefault": true },
-      "dependsOn": ["cargo: build", "cargo: test", "cargo: clippy"],
+      "dependsOn": [
+        "cargo: build",
+        "npm: build",
+        "cargo: test",
+        "cargo: clippy"
+      ],
       "dependsOrder": "sequence"
     }
   ]
