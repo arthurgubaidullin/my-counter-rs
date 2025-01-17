@@ -1,5 +1,6 @@
 use axum::Router;
-use std::net::SocketAddr;
+use server::counter;
+use std::{env, net::SocketAddr};
 use tower_http::{services::ServeDir, trace::TraceLayer};
 use tracing_subscriber::{layer::SubscriberExt, util::SubscriberInitExt};
 
@@ -14,7 +15,11 @@ async fn main() {
         .with(tracing_subscriber::fmt::layer())
         .init();
 
-    let app = Router::new().nest_service("/test", ServeDir::new("web/dist"));
+    let assets = env::var("ASSETS").unwrap_or_else(|_| "web/dist".to_string());
+
+    let app = Router::new()
+        .merge(counter::router())
+        .fallback_service(ServeDir::new(assets));
 
     let port = 3000;
 
