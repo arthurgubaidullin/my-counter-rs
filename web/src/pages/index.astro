@@ -1,5 +1,6 @@
 ---
+import { Counter } from "../components/counter";
 import Layout from "../layouts/Layout.astro";
 ---
 
-<Layout>test</Layout>
+<Layout><Counter client:only="preact" /></Layout>
