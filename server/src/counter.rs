@@ -32,7 +32,7 @@ async fn get_counter_value(State(counter): State<Counter>) -> impl IntoResponse 
 async fn increment_counter_value(State(counter): State<Counter>) -> impl IntoResponse {
     let value = counter.increment();
 
-    (StatusCode::ACCEPTED, format!("{value}"))
+    (StatusCode::OK, format!("{value}"))
 }
 
 pub fn router() -> Router {
