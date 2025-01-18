@@ -8,4 +8,11 @@ export default defineConfig({
     host: true,
   },
   integrations: [preact()],
+  vite: {
+    server: {
+      proxy: {
+        "/counter": "http://localhost:3000",
+      },
+    },
+  },
 });
